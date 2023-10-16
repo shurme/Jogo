@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+<title>jquery UT Droppable - Default functionality</title>
+
+<head>
+    <style>
+        .btn {
+            cursor: pointer;
+            border: 1px solid transparent;
+            background-color: transparent;
+            height: 50px;
+            width: 200px;
+            color: transparent;
+            font-size: 1.5em;
+            box-shadow: transparent;
+        }
+        
+        #main {
+            display: flex;
+        }
+        
+        body {
+            /* Background pattern from Toptal Subtle Patterns */
+            background-image: url("menu.jpg");
+        }
+        
+        .drag-1 {
+            width: 50px;
+            height: 50px;
+            padding: 0.5em;
+            float: left;
+            margin: 5px;
+            border: 2px solid black;
+            background-color: crimson;
+            color: white;
+        }
+        
+        .drop-1 {
+            width: 80px;
+            height: 80px;
+            padding: 0.5em;
+            float: left;
+            margin: 10px;
+            border: 2px solid black;
+            background-color: gray;
+            color: white;
+            text-align: center;
+        }
+        
+        .drag-2 {
+            width: 25px;
+            height: 25px;
+            padding: 0.5em;
+            float: left;
+            margin: 5px;
+            border: 2px solid black;
+            background-color: crimson;
+            color: white;
+        }
+        
+        .drop-2 {
+            width: 40px;
+            height: 40px;
+            padding: 0.5em;
+            float: left;
+            margin: 10px;
+            border: 2px solid black;
+            background-color: gray;
+            color: white;
+            text-align: center;
+        }
+        
+        .droppable.active {
+            background-color: red;
+        }
+        
+        .muro {
+            position: absolute;
+            height: 130px;
+            width: 50px;
+            background-color: red;
+            right: 0px;
+        }
+        
+        .mosca {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .moscap {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .moscam {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+        }
+        
+        .vitoria {
+            background-color: rgb(255, 140, 0);
+            text-align: center;
+            color: rgb(0, 0, 0);
+            font-family: verdana;
+            border-style: solid;
+            border-color: rgba(250, 190, 88, 1);
+            text-transform: capitalize;
+            font-style: italic;
+            font-weight: bold;
+            width: 1680px;
+            border-radius: 20px;
+            height: 500px;
+            margin-top: 160px;
+            font-size: 200px;
+            text-align: center;
+        }
+        
+        .vitoria p {
+            line-height: 0.5;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .wrap {
+            display: table-row-group;
+        }
+        
+        #class1A,
+        #class2A,
+        #class3A,
+        #class4A,
+        #class5A,
+        #class6A,
+        #class7A,
+        #class8A,
+        #class9A,
+        #class10A,
+        #class11A,
+        #class12A,
+        #class13A,
+        #class14A,
+        #class15A,
+        #class16A,
+        #class17A,
+        #class18A {
+            width: 270px;
+            height: 165px;
+            padding: 0.5em;
+            float: left;
+            background-color: #dedddc;
+            color: white;
+            text-align: center;
+            border: 2px solid black;
+            margin: 5px;
+        }
+        
+        #class1,
+        #class2,
+        #class3,
+        #class4,
+        #class5,
+        #class6,
+        #class7,
+        #class8,
+        #class9,
+        #class10,
+        #class11,
+        #class12,
+        #class13,
+        #class14,
+        #class15,
+        #class16,
+        #class17,
+        #class18 {
+            width: 270px;
+            height: 165px;
+            padding: 0.5em;
+            float: left;
+            color: white;
+            text-align: center;
+            border: 2px solid black;
+            margin: 5px;
+        }
+        
+        #mos,
+        #lab,
+        #flappy {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+        
+        #mos:hover,
+        #lab:hover,
+        #flappy:hover {
+            background-color: #3e8e41
+        }
+        
+        #mos:active,
+        #lab:active,
+        #flappy:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        
+        .container {
+            height: 50px;
+            width: 200px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 1px 2px 10px 0px rgba(0, 0, 0, 0.3);
+            background: rgb(231, 36, 2);
+            /* Old browsers */
+            background: -moz-linear-gradient(45deg, rgb(236, 7, 7) 0%, rgb(234, 140, 103) 99%);
+            /* FF3.6-15 */
+            background: -webkit-linear-gradient(45deg, rgba(155, 198, 53, 1) 0%, rgba(192, 234, 103, 1) 99%);
+            /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(45deg, rgba(155, 198, 53, 1) 0%, rgb(241, 11, 11) 99%);
+            /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#9bc635', endColorstr='#c0ea67', GradientType=1);
+            /* IE6-9 fallback on horizontal gradient */
+        }
+    </style>
+    <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js "></script>
+    <script>
+        var a = 0;
+        var b = 0;
+        $(document).ready(function() {
+            $("#mos").click(function() {
+                $("#div1").hide();
+                $("#div2").fadeIn(1000);
+                $('body').css('background-image', 'url(janela.jpg)');
+            });
+            $("#lab").click(function() {
+                $("#div1").hide();
+                $("#div4").fadeIn(1000);
+            });
+            $("#flappy").click(function() {
+                $("#div1").hide();
+                $("#div5").fadeIn(1000);
+                $('body').css('background-image', 'url(fruta.jpg)');
+            });
+            $(".reg").click(function() {
+                $("#div2").hide();
+                $("#div3").hide();
+                $("#div4").hide();
+                $("#div5").hide();
+                $("#div6").hide();
+                $("#div7").hide();
+                $("#div8").hide();
+                $("#div9").hide();
+                $("#div10").hide();
+                $("#div1").fadeIn(500);
+                $('body').css('background-image', 'url(menu.jpg)');
+                setTimeout(function() {
+                    window.location.reload();
+                }, 500);
+            });
+            $(".mosca").each(function() {
+                document.getElementById("a").innerHTML = a;
+                $(this).click(function() {
+                    $(this).hide(1000);
+                    a++;
+                    document.getElementById("a").innerHTML = a;
+                    if (a == 15) {
+                        alert("Vitória! Nível 2:");
+                        $("#div2").hide();
+                        $("#div3").fadeIn(1000);
+                    }
+                });
+            });
+            $(".moscap").each(function() {
+                document.getElementById("b").innerHTML = 15;
+                $(this).click(function() {
+                    $(this).hide(1000);
+                    a++;
+                    document.getElementById("b").innerHTML = a;
+                    if (a == 45) {
+                        alert("Vitória! Nível 3:");
+                        $("#div3").hide();
+                        $("#div6").fadeIn(1000);
+
+                    }
+                });
+            });
+            $(".moscam").each(function() {
+                document.getElementById("c").innerHTML = 45;
+                $(this).click(function() {
+                    $(this).hide(1000);
+                    if (b % 2 == 0) {
+                        $(".moscam").animate({
+                            left: "+=150px",
+                        });
+                    } else {
+                        $(".moscam").animate({
+                            left: "-=150px",
+                        });
+                    }
+                    a++;
+                    b++;
+                    document.getElementById("c").innerHTML = a;
+                    if (a == 75) {
+                        $("#div6").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                });
+            });
+        });
+    </script>
+    <meta charset="utf-8">
+    <script src=" https://code.jquery.com/jquery-1.10.2.js "></script>
+    <script src=" https://code.jquery.com/ui/1.10.4/jquery-ui.js "></script>
+    <script>
+        $(function() {
+            $('.drag-1').draggable({
+                revert: true
+            });
+            $('.drop-1').droppable({
+                hoverclass: 'active',
+                drop: function(e, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    $(this).droppable('destroy');
+                    $(this)
+                        .addClass("ui-state-highlight").find("p")
+                        .html("Vitória!");
+                    alert("Vitória! Nível 2:");
+                    $("#div4").hide();
+                    $("#div8").fadeIn(1000);
+                }
+            });
+            $('.drag-2').draggable({
+                revert: true
+            });
+            $('.drop-2').droppable({
+                hoverclass: 'active',
+                drop: function(e, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    $(this).droppable('destroy');
+                    $(this)
+                        .addClass("ui-state-highlight").find("p")
+                        .html("Vitória!");
+                    $("#div8").hide();
+                    $("#div7").fadeIn(1000);
+                }
+            });
+            $(".barr").droppable({
+                tolerance: "touch",
+                over: function(event, ui) {
+                    $(this)
+                    alert("Perdes-te, começa novamente");
+                }
+            });
+        });
+        var c = 0;
+        var d = 0;
+        var e = 0;
+        $(document).ready(function() {
+            $("#class1A").draggable();
+            $("#class2A").draggable();
+            $("#class1").droppable({
+                accept: "#class1A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    c++;
+                    if (c == 3) {
+                        $("#div5").hide();
+                        $("#div9").fadeIn(1000);
+                        alert("Vitória! Nível 2:");
+                    }
+                }
+            });
+            $("#class2").droppable({
+                accept: "#class2A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    //$(this).html(this.remove().html());
+                    c++;
+                    if (c == 3) {
+                        $("#div5").hide();
+                        $("#div9").fadeIn(1000);
+                        alert("Vitória! Nível 2:");
+                    }
+                }
+            });
+            $("#class3A").draggable();
+            $("#class4A").draggable();
+            $("#class5A").draggable();
+            $("#class6A").draggable();
+            $("#class7A").draggable();
+            $("#class8A").draggable();
+            $("#class9A").draggable();
+            $("#class10A").draggable();
+            $("#class11A").draggable();
+            $("#class12A").draggable();
+            $("#class13A").draggable();
+            $("#class14A").draggable();
+            $("#class15A").draggable();
+            $("#class16A").draggable();
+            $("#class17A").draggable();
+            $("#class18A").draggable();
+            $("#class3").droppable({
+                accept: "#class3A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    c++;
+                    if (c == 3) {
+                        $("#div5").hide();
+                        $("#div9").fadeIn(1000);
+                        alert("Vitória! Nível 2:");
+                    }
+                }
+            });
+            $("#class4").droppable({
+                accept: "#class4A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    d++;
+                    if (d == 5) {
+                        $("#div9").hide();
+                        $("#div10").fadeIn(1000);
+                        alert("Vitória! Nível 3:");
+                    }
+                }
+            });
+            $("#class5").droppable({
+                accept: "#class5A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    d++;
+                    if (d == 5) {
+                        $("#div9").hide();
+                        $("#div10").fadeIn(1000);
+                        alert("Vitória! Nível 3:");
+                    }
+                }
+            });
+            $("#class6").droppable({
+                accept: "#class6A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    d++;
+                    if (d == 5) {
+                        $("#div9").hide();
+                        $("#div10").fadeIn(1000);
+                        alert("Vitória! Nível 3:");
+                    }
+                }
+            });
+            $("#class7").droppable({
+                accept: "#class7A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    d++;
+                    if (d == 5) {
+                        $("#div9").hide();
+                        $("#div10").fadeIn(1000);
+                        alert("Vitória! Nível 3:");
+                    }
+                }
+            });
+            $("#class8").droppable({
+                accept: "#class8A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    d++;
+                    if (d == 5) {
+                        $("#div9").hide();
+                        $("#div10").fadeIn(1000);
+                        alert("Vitória! Nível 3:");
+                    }
+                }
+            });
+            $("#class9").droppable({
+                accept: "#class9A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class10").droppable({
+                accept: "#class10A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class11").droppable({
+                accept: "#class11A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class12").droppable({
+                accept: "#class12A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class13").droppable({
+                accept: "#class13A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class14").droppable({
+                accept: "#class14A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class15").droppable({
+                accept: "#class15A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class16").droppable({
+                accept: "#class16A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class17").droppable({
+                accept: "#class17A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+            $("#class18").droppable({
+                accept: "#class18A",
+                drop: function(event, ui) {
+                    $(this).html(ui.draggable.remove().html());
+                    e++;
+                    if (e == 10) {
+                        $("#div10").hide();
+                        $("#div7").fadeIn(1000);
+                        $('body').css('background-image', 'url(menu.jpg)');
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="div1">
+        <center>
+            <font style="font-size: 200px; background-color: orange;">
+                Vamos Jogar?</font>
+            <br><br>
+            <button id="mos" style="font-size: 100px;">Afaste As Moscas</button><br><br>
+            <button id="lab" style="font-size: 100px;">Labirinto</button><br><br>
+            <button id="flappy" style="font-size: 100px;">Ligue As Frutas</button></div>
+    </center>
+    <div id="div2" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <left>
+            <br>
+            <div class="container">
+                <font size="5px"><b>Pontuação: <span id="a"></span></b></font>
+            </div>
+        </left>
+        <center>
+            <h1 class="container" style="width: 300px;">Afaste as moscas</h1>
+        </center>
+        <img src=" Fly.png " class="mosca" />
+        <img src="Fly.png " class="mosca" style="margin-left: 680px;" />
+        <br />
+        <img src="Fly.png " class="mosca" style="margin-left: 280px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 1080px;" />
+        <br />
+        <img src="Fly.png " class="mosca" style="margin-left: 180px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 380px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 380px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 780px;" />
+        <br />
+        <img src="Fly.png " class="mosca" style="margin-left: 980px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 580px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 580px;" />
+        <br />
+        <img src="Fly.png " class="mosca" style="margin-left: 380px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 580px;" />
+        <br />
+        <img src="Fly.png " class="mosca" style="margin-left: 180px;" />
+        <img src="Fly.png " class="mosca" style="margin-left: 980px;" />
+    </div>
+    <div id="div3" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <left>
+            <div class="container">
+                <font size="5px"><b>Pontuação: <span id="b"></span></b></font>
+            </div>
+        </left>
+        <center>
+            <h1 class="container" style="width: 300px;">Afaste as moscas</h1>
+        </center>
+        <img src=" Fly.png " class="moscap" />
+        <img src="Fly.png " class="moscap" style="margin-left: 680px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 280px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 1080px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 780px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 980px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 580px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 580px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 580px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 980px;" />
+        <img src=" Fly.png " class="moscap" />
+        <img src="Fly.png " class="moscap" style="margin-left: 680px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 280px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 1080px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 780px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 980px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 580px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 580px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 580px;" />
+        <br />
+        <img src="Fly.png " class="moscap" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscap" style="margin-left: 980px;" />
+    </div>
+    <div id="div6" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <left>
+            <div class="container">
+                <font size="5px"><b>Pontuação: <span id="c"></span></b></font>
+            </div>
+        </left>
+        <center>
+            <h1 class="container" style="width: 300px;">Afaste as moscas</h1>
+        </center>
+        <img src=" Fly.png " class="moscam" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 680px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 280px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 1080px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 480px;" /><br /><br />
+        <img src="Fly.png " class="moscam" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 1480px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 1380px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 580px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 680px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 340px;" />
+        <br /><br />
+        <img src="Fly.png " class="moscam" style="margin-left: 630px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 980px;" />
+        <img src=" Fly.png " class="moscam" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 680px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 280px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 1080px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 480px;" /><br /><br />
+        <img src="Fly.png " class="moscam" style="margin-left: 380px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 1480px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 980px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 580px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 680px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 340px;" />
+        <br /><br />
+        <img src="Fly.png " class="moscam" style="margin-left: 630px;" />
+        <br />
+        <img src="Fly.png " class="moscam" style="margin-left: 180px;" />
+        <img src="Fly.png " class="moscam" style="margin-left: 980px;" />
+    </div>
+    <div id="div7" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <center>
+            <div class="vitoria">
+                <p>GANHAS-TE!!</p>
+            </div>
+        </center>
+    </div>
+    <div id="div4" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <br>
+        <br>
+        <br>
+        <div class="drag-1">
+            <p>Empurre</p>
+        </div>
+        <div id="main" style="margin-top: 80px;">
+            <div class="barr" style="background-color: red; width: 100px; height: 100px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 800px; height: 100px; margin-left: 100px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 100px; height: 100px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 100px; height: 100px; margin-left: 800px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 800px; height: 100px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 100px; height: 100px; margin-left: 100px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 600px; height: 100px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 100px; height: 100px; margin-left: 300px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 600px; height: 100px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 300px; height: 100px; margin-left: 100px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 100px; height: 120px; margin-left: 400px;"></div>
+            <div class="drop-1">Meta</div>
+            <div class="barr" style="background-color: red; width: 100px; height: 120px; margin-left: 680px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 1000px; height: 90px; margin-left: 400px;"></div>
+        </div>
+    </div>
+    <div id="div8" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <br>
+        <div class="drag-2">
+            <p></p>
+        </div>
+        <div id="main" style="margin-top: 58px;">
+            <div class="barr" style="background-color: red; width: 850px; height: 50px; margin-left: 550px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 70px; margin-left: 1350px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 50px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 50px; height: 50px; margin-left: 70px;"></div>
+            <div class="barr" style="background-color: red; width: 50px; height: 50px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 310px; height: 50px; margin-left: 70px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 50px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 500px; height: 50px; margin-left: 70px;"></div>
+            <div class="barr" style="background-color: red; width: 310px; height: 50px; margin-left: 70px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 70px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 50px; height: 70px; margin-left: 520px;"></div>
+            <div class="barr" style="background-color: red; width: 310px; height: 70px; margin-left: 70px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 300px; height: 100px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 250px; height: 100px; margin-left: 70px;"></div>
+            <div class="barr" style="background-color: red; width: 50px; height: 100px; margin-left: 330px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 70px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 50px; height: 70px; margin-left: 520px;"></div>
+            <div class="barr" style="background-color: red; width: 310px; height: 70px; margin-left: 70px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 70px; margin-left: 400px;"></div>
+            <div class="barr" style="background-color: red; width: 500px; height: 70px; margin-left: 70px;"></div>
+            <div class="barr" style="background-color: red; width: 180px; height: 70px; margin-left: 200px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 250px; height: 50px; margin-left: 200px;"></div>
+            <div class="barr" style="background-color: red; width: 630px; height: 50px; margin-left: 70px;"></div>
+            <div class="barr" style="background-color: red; width: 180px; height: 50px; margin-left: 70px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 70px; margin-left: 200px;"></div>
+            <div class="barr" style="background-color: red; width: 630px; height: 70px; margin-left: 270px;"></div>
+            <div class="barr" style="background-color: red; width: 180px; height: 70px; margin-left: 70px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 50px; height: 80px; margin-left: 200px;"></div>
+            <div class="drop-2">Meta</div>
+            <div class="barr" style="background-color: red; width: 180px; height: 80px; margin-left: 890px;"></div>
+        </div>
+        <div id="main">
+            <div class="barr" style="background-color: red; width: 1200px; height: 40px; margin-left: 200px;"></div>
+        </div>
+    </div>
+    <div id="div5" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <br>
+        <br>
+        <br>
+        <center>
+            <h1>Ligue As Frutas Às Cores</h1>
+            <br>
+            <div class="wrap">
+                <img src="pera.png" id="class3A" class="ui-widget-content">
+                <img src="banana.png" id="class1A" class="ui-widget-content">
+                <img src="morango.png" id="class2A" class="ui-widget-content">
+            </div>
+            <br><br><br>
+            <div class="wrap">
+                <div id="class1" class="ui-widget-header" style="background-color: yellow;">
+                </div>
+                <div id="class2" class="ui-widget-header" style="background-color: red;">
+                </div>
+                <div id="class3" class="ui-widget-header" style="background-color: greenyellow;">
+                </div>
+            </div>
+        </center>
+    </div>
+    <div id="div9" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <br>
+        <br>
+        <br>
+        <center>
+            <h1>Ligue As Frutas Às Cores</h1>
+            <br>
+            <div class="wrap">
+                <img src="tomate.png" id="class7A" class="ui-widget-content">
+                <img src="coco.png" id="class5A" class="ui-widget-content">
+                <img src="ananas.png" id="class4A" class="ui-widget-content">
+                <img src="limao.png" id="class8A" class="ui-widget-content">
+                <img src="uva.png" id="class6A" class="ui-widget-content">
+            </div>
+            <br><br><br>
+            <div class="wrap">
+                <div id="class5" class="ui-widget-header" style="background-color: rgb(104, 77, 26);">
+                </div>
+                <div id="class6" class="ui-widget-header" style="background-color: rgb(103, 2, 185);">
+                </div>
+                <div id="class7" class="ui-widget-header" style="background-color: red;">
+                </div>
+                <div id="class4" class="ui-widget-header" style="background-color: rgb(255, 173, 21);">
+                </div>
+                <div id="class8" class="ui-widget-header" style="background-color: yellow;">
+                </div>
+            </div>
+        </center>
+    </div>
+    <div id="div10" style="display: none ">
+        <button class="reg" style="font-size: 30px;">Voltar</button>
+        <center>
+            <div class="wrap">
+                <img src="dragon.png" id="class15A" class="ui-widget-content">
+                <img src="atemoia.png" id="class18A" class="ui-widget-content">
+                <img src="beringela.png" id="class12A" class="ui-widget-content">
+                <img src="kiwi.png" id="class9A" class="ui-widget-content">
+                <img src="laranja.png" id="class17A" class="ui-widget-content">
+                <img src="beterraba.png" id="class14A" class="ui-widget-content">
+                <img src="mirtilo.png" id="class10A" class="ui-widget-content">
+                <img src="cereja.png" id="class16A" class="ui-widget-content">
+                <img src="melao.png" id="class13A" class="ui-widget-content">
+                <img src="melancia.png" id="class11A" class="ui-widget-content">
+            </div>
+            <br><br><br>
+            <div class="wrap">
+                <div id="class9" class="ui-widget-header" style="background-color: rgb(104, 77, 26);">
+                </div>
+                <div id="class10" class="ui-widget-header" style="background-color: rgb(47, 12, 202);">
+                </div>
+                <div id="class11" class="ui-widget-header" style="background-color: green;">
+                </div>
+                <div id="class12" class="ui-widget-header" style="background-color: #614051;">
+                </div>
+                <div id="class13" class="ui-widget-header" style="background-color: yellow;">
+                </div>
+                <div id="class14" class="ui-widget-header" style="background-color: rgb(240, 32, 94);">
+                </div>
+                <div id="class15" class="ui-widget-header" style="background-color: white;">
+                </div>
+                <div id="class16" class="ui-widget-header" style="background-color: red;">
+                </div>
+                <div id="class17" class="ui-widget-header" style="background-color: rgb(255, 173, 21);">
+                </div>
+                <div id="class18" class="ui-widget-header" style="background-color: yellowgreen;">
+                </div>
+            </div>
+        </center>
+    </div>
+</body>
+
+</html>
+
+</html>
